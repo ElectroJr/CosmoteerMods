@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Lib.Harmony" Version="2.3.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Cosmoteer">
+        <HintPath>..\Cosmoteer-publicized.dll</HintPath>
+        <Private>False</Private>
+      </Reference>
+      <Reference Include="HalflingCore">
+        <HintPath>..\HalflingCore.dll</HintPath>
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="logo.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="mod.rules">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

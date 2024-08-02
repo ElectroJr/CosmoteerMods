@@ -1,0 +1,8 @@
+ID = electrosr.resource_sharing
+Name = "Resource Sharing"
+Version = 1.0.0
+CompatibleGameVersions = ["0.27.0c"]
+ModifiesGameplay = true
+Author = "ElectroSR"
+Logo = "logo.png"
+Description = "Allows resources to be taken from allied players via the resource transfer window."
