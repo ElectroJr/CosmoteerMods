@@ -1,7 +1,7 @@
 ID = electrosr.resource_sharing
 Name = "Resource Sharing"
-Version = 1.0.0
-CompatibleGameVersions = ["0.27.0c"]
+Version = 1.1.0
+CompatibleGameVersions = ["0.28.2"]
 ModifiesGameplay = true
 Author = "ElectroSR"
 Logo = "logo.png"

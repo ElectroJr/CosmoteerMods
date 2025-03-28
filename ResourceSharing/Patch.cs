@@ -16,6 +16,9 @@ namespace ResourceSharing;
 [HarmonyPatch]
 public static class Patch
 {
+	#region Harmony Patch
+	// This region contains all the harmony patches.
+	// Each of these methods tell harmony to modify a specific resource transfer related methods
 	[HarmonyTranspiler]
 	[HarmonyPatch(typeof(CrewAndResourceTransferWindow), nameof(CrewAndResourceTransferWindow.OnUpdatingUIState))]
 	public static IEnumerable<CodeInstruction> UiStateTranspiler(IEnumerable<CodeInstruction> instructions)
@@ -65,14 +68,23 @@ public static class Patch
 		return ReplaceCalls(instructions);
 	}
 
+	#endregion
+
+	/// <summary>
+	/// This method looks through the instructions and looks for calls to specific methods (target1, target2, etc) and
+	/// replaces them with new, more permissive, methods (replacement1, replacement2, etc)
+	/// </summary>
 	public static List<CodeInstruction> ReplaceCalls(IEnumerable<CodeInstruction> instructions)
 	{
+		// These are the more-permissive methods that we will be using instead of the original methods
 		var replacement1 = typeof(Patch).GetMethod(nameof(CanExecuteCommandsFromLocalPlayer))!;
 		var replacement2 = typeof(Patch).GetMethod(nameof(CanExecuteCrewCommandsFromLocalPlayer))!;
 		var replacement3 = typeof(Patch).GetMethod(nameof(IsCommandableByLocalPlayer))!;
 		var replacement4 = typeof(Patch).GetMethod(nameof(CanExecuteCrewCommandsFrom))!;
 		var replacement5 = typeof(Patch).GetMethod(nameof(IsCommandableBy))!;
 
+		// the target methods that should be replaced.
+		// i.e., any calls to target1 get replaced with a call to replacement1
 		var target1 = typeof(CommandManager).GetProperty(nameof(CommandManager.CanExecuteCommandsFromLocalPlayer))
 			?.GetGetMethod();
 		if (target1 == null)
@@ -100,6 +112,7 @@ public static class Patch
 		if (target5 == null)
 			throw new Exception($"Resource Sharing Mod: Cannot find {nameof(CommandManager.IsCommandableBy)} method");
 
+		// Look for and replace any of the given method calls
 		var codes = new List<CodeInstruction>(instructions);
 		ReplaceCalls(codes, target1, replacement1);
 		ReplaceCalls(codes, target2, replacement2);
@@ -124,6 +137,7 @@ public static class Patch
 		}
 	}
 
+	#region Replacements
 	public static bool CanExecuteCommandsFromLocalPlayer(CommandManager @this)
 	{
 		return @this.Game != null && (@this.CanExecuteCommandsFrom(@this.Game.LocalPlayerIndex) ||
@@ -153,4 +167,5 @@ public static class Patch
 		return playerIndex == -4 || playerIndex == @this.Ship.Metadata.PlayerIndex ||
 		       @this.Ship.IsAlliesWith(playerIndex);
 	}
+	#endregion
 }
